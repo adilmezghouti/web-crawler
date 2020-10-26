@@ -7,9 +7,7 @@ import org.jsoup.select.Elements;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component
@@ -23,10 +21,21 @@ public class WebPageParserImpl implements WebPageParser<WebPage> {
         Document document = Jsoup.connect(url)
                 .timeout(0).get();
 
-        Elements allElements =
+        // Retrieve all the anchor tags
+        Elements aElements =
                 document.getElementsByTag("a");
-        for (Element element : allElements) {
+        for (Element element : aElements) {
             set.add(new WebPage(element.attr("href"), url));
+        }
+
+        // Retrieve media elements
+        for (Element element:document.select("[src]")) {
+            set.add(new WebPage(element.attr("src"), url, true));
+        }
+
+        // retrieve css and script elements
+        for (Element element:document.select("link[href]")) {
+            set.add(new WebPage(element.attr("href"), url, true));
         }
         return set;
     }

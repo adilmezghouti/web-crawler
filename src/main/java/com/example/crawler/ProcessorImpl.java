@@ -35,11 +35,16 @@ public class ProcessorImpl implements Processor {
             WebPage wp = queue.remove();
             System.out.println(wp.getUrl());
             try {
-                if (wp.getTimeVisited() > RETRY_TIMES_THRESHOLD || !Utils.areUrlsSameDomain(url, wp.getUrl())) {
+                if (wp.getTimeVisited() > RETRY_TIMES_THRESHOLD) {
                     processedPages.add(wp);
                 } else {
                     for (WebPage newPage:parser.parse(wp.getUrl())) {
-                        if (!visited.contains(newPage.getUrl())) {
+                        if (!Utils.areUrlsSameDomain(url, newPage.getUrl())) {
+                            newPage.setExternalUrl(true);
+                            processedPages.add(newPage);
+                        }else if (newPage.isStaticContent()) {
+                            processedPages.add(newPage);
+                        } else if (!visited.contains(newPage.getUrl())) {
                             queue.add(newPage);
                             visited.add(newPage.getUrl());
                         }
@@ -47,6 +52,7 @@ public class ProcessorImpl implements Processor {
                     processedPages.add(wp);
                 }
             } catch (Exception e) {
+                logger.error("Failed to process url: {}", url);
                 wp.setError(e.getMessage());
                 wp.setVisited(true);
                 wp.setTimeVisited(wp.getTimeVisited() + 1);
