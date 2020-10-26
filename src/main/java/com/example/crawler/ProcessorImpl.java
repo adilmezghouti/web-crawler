@@ -11,6 +11,7 @@ import java.util.Set;
 @Component
 public class ProcessorImpl implements Processor {
     private static final Logger logger = LoggerFactory.getLogger(ProcessorImpl.class);
+    private static final int RETRY_TIMES_THRESHOLD = 3; //TODO move this to the properties file
 
     @Autowired
     private CrawlerQueue<WebPage> queue;
@@ -21,16 +22,20 @@ public class ProcessorImpl implements Processor {
     @Autowired
     private WebPageParser<WebPage> parser;
 
+    @Autowired
+    private Reporter reporter;
+
     @Override
     public void process(String url) {
         logger.debug("Processing {}", url);
-        queue.add(new WebPage(url));
+        queue.add(new WebPage(url, ""));
         Set<String> visited = new HashSet<>();
 
         while (!queue.isEmpty()) {
             WebPage wp = queue.remove();
+            System.out.println(wp.getUrl());
             try {
-                if (wp.getTimeVisited() > 3) {
+                if (wp.getTimeVisited() > RETRY_TIMES_THRESHOLD || !Utils.areUrlsSameDomain(url, wp.getUrl())) {
                     processedPages.add(wp);
                 } else {
                     for (WebPage newPage:parser.parse(wp.getUrl())) {
@@ -48,5 +53,7 @@ public class ProcessorImpl implements Processor {
                 queue.add(wp);
             }
         }
+
+        reporter.report();
     }
 }

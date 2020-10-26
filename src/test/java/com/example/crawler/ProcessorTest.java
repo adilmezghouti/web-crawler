@@ -28,7 +28,7 @@ class ProcessorTest {
     @Test
     void shouldProcessItems() throws Exception {
         given(this.parser.parse(URL))
-                .willReturn(Set.of(new WebPage("https://wiprodigital.com/who-we-are/"), new WebPage("https://wiprodigital.com/what-we-do/")));
+                .willReturn(Set.of(new WebPage("https://wiprodigital.com/who-we-are/", "https://wiprodigital.com"), new WebPage("https://wiprodigital.com/what-we-do/", "https://wiprodigital.com")));
         processor.process(URL);
         assertTrue(processedPages.getAll().size() > 0);
     }
@@ -36,7 +36,7 @@ class ProcessorTest {
     @Test
     void shouldFindFailingItemsForNonExistingUrls() throws Exception {
         given(this.parser.parse(URL))
-                .willReturn(Set.of(new WebPage("https://wiprodigital.com/who-we-are/"), new WebPage("https://wiprodigital.com/what-we-do/")));
+                .willReturn(Set.of(new WebPage("https://wiprodigital.com/who-we-are/", "https://wiprodigital.com"), new WebPage("https://wiprodigital.com/what-we-do/", "https://wiprodigital.com")));
         processor.process(URL + "blala");
         assertFalse(processedPages.getAll().stream().filter(WebPage::isVisited).toArray().length > 0);
     }

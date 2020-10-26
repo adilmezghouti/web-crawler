@@ -7,8 +7,10 @@ public class WebPage {
     private boolean visited;
     private String error;
     private int timeVisited;
+    private String sourceUrl;
 
-    public WebPage(String url) {
+    public WebPage(String url, String sourceUrl) {
+        this.sourceUrl = sourceUrl;
         this.url = url;
     }
 
@@ -44,17 +46,25 @@ public class WebPage {
         this.timeVisited = timeVisited;
     }
 
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
+
+    public void setSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WebPage webPage = (WebPage) o;
-        return visited == webPage.visited && timeVisited == webPage.timeVisited && Objects.equals(url, webPage.url) && Objects.equals(error, webPage.error);
+        return visited == webPage.visited && timeVisited == webPage.timeVisited && Objects.equals(url, webPage.url) && Objects.equals(error, webPage.error) && Objects.equals(sourceUrl, webPage.sourceUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(url, visited, error, timeVisited);
+        return Objects.hash(url, visited, error, timeVisited, sourceUrl);
     }
 
     @Override
@@ -64,6 +74,7 @@ public class WebPage {
                 ", visited=" + visited +
                 ", error='" + error + '\'' +
                 ", timeVisited=" + timeVisited +
+                ", sourceUrl='" + sourceUrl + '\'' +
                 '}';
     }
 }

@@ -21,7 +21,7 @@ public class Utils {
         return Pattern.matches(regex, url);
     }
 
-    public static boolean isUrlSameDomain(final String primaryUrl, final String secondaryUrl) {
+    public static boolean areUrlsSameDomain(final String primaryUrl, final String secondaryUrl) {
         try {
             URL url1 =  new URL(primaryUrl);
             URL url2 = new URL(secondaryUrl);

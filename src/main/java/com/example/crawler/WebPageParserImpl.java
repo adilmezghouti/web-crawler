@@ -26,7 +26,7 @@ public class WebPageParserImpl implements WebPageParser<WebPage> {
         Elements allElements =
                 document.getElementsByTag("a");
         for (Element element : allElements) {
-            set.add(new WebPage(element.attr("href")));
+            set.add(new WebPage(element.attr("href"), url));
         }
         return set;
     }
