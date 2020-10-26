@@ -44,9 +44,12 @@ public class ProcessorImpl implements Processor {
                             processedPages.add(newPage);
                         }else if (newPage.isStaticContent()) {
                             processedPages.add(newPage);
-                        } else if (!visited.contains(newPage.getUrl())) {
-                            queue.add(newPage);
-                            visited.add(newPage.getUrl());
+                        } else {
+                            processedPages.add(newPage);
+                            if (!visited.contains(newPage.getUrl())) {
+                                queue.add(newPage);
+                                visited.add(newPage.getUrl());
+                            }
                         }
                     }
                     processedPages.add(wp);

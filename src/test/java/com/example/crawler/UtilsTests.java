@@ -32,6 +32,16 @@ public class UtilsTests {
     }
 
     @Test
+    void isTrueIfUrlsHaveSameHostWithDifferentSubdomains() {
+        assertTrue(Utils.areUrlsSameDomain("https://wiprodigital.com", "https://subdomain.wiprodigital.com/partners/leanix/"));
+    }
+
+    @Test
+    void isTrueIfUrlsHaveSameHostWithDifferentCases() {
+        assertTrue(Utils.areUrlsSameDomain("https://wiprodigital.com", "https://WIPRODIGITAL.com/partners/leanix/"));
+    }
+
+    @Test
     void isFalseIfUrlsHaveDifferentHosts() {
         assertFalse(Utils.areUrlsSameDomain("https://wiprodigital.com", "https://twitter.com/"));
     }

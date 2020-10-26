@@ -1,10 +1,13 @@
 package com.example.crawler;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,19 +33,44 @@ public class JSONReporterImpl implements Reporter {
     @Override
     public void report() {
         logger.debug("Reporting...");
-        Map<String, List<String>> staticContent = new HashMap<>();
-        Map<String, List<String>> erroredUrl = new HashMap<>();
-        Map<String, List<String>> externalUrls = new HashMap<>();
+        FileWriter file = null;
+        Map<String, List<String>> urlMap = new HashMap<>();
+        Map<String, List<String>> staticContentMap = new HashMap<>();
+        Map<String, List<String>> externalUrlsMap = new HashMap<>();
+        Map<String, List<String>> erroredUrlMap = new HashMap<>();
+
         for (WebPage wp:processedPages.getAll()) {
             if (wp.isStaticContent()) {
-                addItemToMap(wp.getSourceUrl(), wp.getUrl(), staticContent);
+                addItemToMap(wp.getSourceUrl(), wp.getUrl(), staticContentMap);
             } else if (wp.getError() != null) {
-                addItemToMap(wp.getSourceUrl(), wp.getUrl(), erroredUrl);
+                addItemToMap(wp.getSourceUrl(), wp.getUrl(), erroredUrlMap);
             } else if (wp.isExternalUrl()) {
-                addItemToMap(wp.getSourceUrl(), wp.getUrl(), externalUrls);
+                addItemToMap(wp.getSourceUrl(), wp.getUrl(), externalUrlsMap);
+            } else {
+                addItemToMap(wp.getSourceUrl(), wp.getUrl(), urlMap);
             }
         }
 
-        System.out.println(staticContent);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("InternalUrls", urlMap);
+        jsonObject.put("ExternalUrls", externalUrlsMap);
+        jsonObject.put("StaticContent", staticContentMap);
+        jsonObject.put("ErroredUrls", erroredUrlMap);
+
+        try {
+            logger.debug("Generating report");
+            file = new FileWriter("report.json");
+            file.write(jsonObject.toJSONString());
+            logger.debug("Successfully generated the crawling report");
+        } catch (IOException e) {
+            logger.error("Failed to generate report: {}", e.getMessage());
+        } finally {
+            try {
+                file.flush();
+                file.close();
+            } catch (Exception e) {
+                logger.error("Failed to close file");
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class Utils {
@@ -25,7 +26,7 @@ public class Utils {
         try {
             URL url1 =  new URL(primaryUrl);
             URL url2 = new URL(secondaryUrl);
-            return url1.getHost().equalsIgnoreCase(url2.getHost());
+            return url2.getHost().toLowerCase().endsWith(url1.getHost().toLowerCase());
         } catch (MalformedURLException e) {
             logger.error("Failed to compare two urls: {} and {}", primaryUrl, secondaryUrl);
             return false;
