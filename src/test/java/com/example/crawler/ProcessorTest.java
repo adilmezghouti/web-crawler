@@ -1,21 +1,21 @@
 package com.example.crawler;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
+@ContextConfiguration(classes = {CrawlerQueueImpl.class, ProcessorImpl.class, ProcessedPagesImpl.class, WebPageParserImpl.class, JSONReporterImpl.class})
 class ProcessorTest {
     private final String URL = "http://wiprodigital.com";
+
     @Autowired
     Processor processor;
 
@@ -46,6 +46,6 @@ class ProcessorTest {
         given(this.parser.parse(URL))
                 .willThrow(new Exception("any error"));
         processor.process(URL);
-        assertTrue(processedPages.getAll().stream().filter(item -> !item.getError().isEmpty()).toArray().length > 0);
+        assertTrue(processedPages.getAll().stream().filter(item -> item.getError() != null).toArray().length > 0);
     }
 }
