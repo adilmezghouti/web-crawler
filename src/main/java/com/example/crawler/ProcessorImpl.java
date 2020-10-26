@@ -1,5 +1,7 @@
 package com.example.crawler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +10,8 @@ import java.util.Set;
 
 @Component
 public class ProcessorImpl implements Processor {
+    private static final Logger logger = LoggerFactory.getLogger(ProcessorImpl.class);
+
     @Autowired
     private CrawlerQueue<WebPage> queue;
 
@@ -19,6 +23,7 @@ public class ProcessorImpl implements Processor {
 
     @Override
     public void process(String url) {
+        logger.debug("Processing {}", url);
         queue.add(new WebPage(url));
         Set<String> visited = new HashSet<>();
 

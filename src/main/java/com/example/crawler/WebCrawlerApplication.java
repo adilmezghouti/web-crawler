@@ -11,16 +11,17 @@ import java.util.Arrays;
 
 @SpringBootApplication
 public class WebCrawlerApplication implements CommandLineRunner {
+    private static final Logger logger = LoggerFactory.getLogger(WebCrawlerApplication.class);
+
     @Autowired
     private Processor processor;
-    private static final Logger logger = LoggerFactory.getLogger(WebCrawlerApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(WebCrawlerApplication.class, args);
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         logger.info("Starting crawler with url: {}", Arrays.toString(args));
         if (Utils.validateUrl(args[0])) {
             processor.process(args[0]);

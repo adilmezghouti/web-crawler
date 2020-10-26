@@ -26,4 +26,13 @@ public class UtilsTests {
         assertFalse(Utils.validateUrl(" "));
     }
 
+    @Test
+    void isTrueIfUrlsHaveSameHost() {
+        assertTrue(Utils.isUrlSameDomain("https://wiprodigital.com", "https://wiprodigital.com/partners/leanix/"));
+    }
+
+    @Test
+    void isFalseIfUrlsHaveDifferentHosts() {
+        assertFalse(Utils.isUrlSameDomain("https://wiprodigital.com", "https://twitter.com/"));
+    }
 }
