@@ -1,6 +1,6 @@
 # Getting Started
 
-###Requirements
+### Requirements
 * Java 13
 * Maven 3
 
@@ -11,12 +11,12 @@ Here are the steps to follow to run the crawler:
 * java -jar WebCrawler-0.0.1-SNAPSHOT.jar "http://wiprodigital.com"
 * You should find a file named report.json in the target folder. This file contains the information that our crawler was able to find.
 
-###Functional Requirements
+### Functional Requirements
 Please write a simple web crawler in a language of your choice.  .
 The crawler should be limited to one domain. Given a starting URL – say http://wiprodigital.com - it should visit all pages within the domain, but not follow the links to external sites such as Google or Twitter.
 The output should be a simple structured site map (this does not need to be a traditional XML sitemap - just some sort of output to reflect what your crawler has discovered) showing links to other pages under the same domain, links to external URLs, and links to static content such as images for each respective page.
 
-###Non-Functional Requirements
+### Non-Functional Requirements
 Here are some of the non-functional requirements that we will take into consideration while building our crawler.
 * Add Logging for debugging, monitoring and analysis
 * Make the application configurable so we can tweak things without the need to re-compile and re-deply the app
@@ -24,7 +24,7 @@ Here are some of the non-functional requirements that we will take into consider
 * Validate the input data
 * Provide good test coverage to make things like maintainability, readibility, refactoring easy in the future 
 
-###Components
+### Components
 Choosing Spring allowed us to be build an app that is easily configurable, testable, scalable, and integrable.
 Please note that we used interfaces for all our components to make is easy for us to provide alternative implementations
 to address needs that might come up inthe future.
@@ -41,7 +41,7 @@ The file will have the following categories:
   * Static Content Urls
   * Errored Urls
   
-###Enhancements
+### Enhancements
 There are still a lot of things we can do to make our crawler better:
 * Make our crawler scalable, but making it multi-threaded
 * Make the parsing of urls better by taking into consideration things like url parameters
