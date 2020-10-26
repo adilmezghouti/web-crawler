@@ -11,6 +11,9 @@ Here are the steps to follow to run the crawler:
 * java -jar WebCrawler-0.0.1-SNAPSHOT.jar "http://wiprodigital.com"
 * You should find a file named report.json in the target folder. This file contains the information that our crawler was able to find.
 
+### Running the tests
+To run the tests, please use this command: mvn clean compile test
+
 ### Functional Requirements
 The crawler should be limited to one domain. Given a starting URL – say http://wiprodigital.com - it should visit all pages within the domain, but not follow the links to external sites such as Google or Twitter.
 The output should be a simple structured site map (this does not need to be a traditional XML sitemap - just some sort of output to reflect what your crawler has discovered) showing links to other pages under the same domain, links to external URLs, and links to static content such as images for each respective page.
